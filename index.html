@@ -1,0 +1,866 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pointers in C</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="noise-overlay" aria-hidden="true"></div>
+
+    <a class="skip-link" href="#intro">Skip to content</a>
+
+    <div class="site-shell">
+
+    <!-- ================= HERO ================= -->
+
+    <header id="home" class="hero swiss-grid-pattern">
+
+        <div class="section-kicker">01 / MEMORY SYSTEM</div>
+        <div class="hero-grid">
+            <div class="hero-copy">
+                <h1>POINTERS<br><span>IN C</span></h1>
+
+                <p class="hero-intro">
+                    Ever wonder where your variables in C actually live?
+                    Well, they live in memory!
+                    Just like we have an address and a place to call home,
+                    every variable has its own location in memory.
+                    But variables don't exactly leave their front doors open
+                    or footprints behind.
+                    That's where pointers enter the scene—they know exactly
+                    where to look.
+                    <strong>Come along and enjoy the show.</strong>
+                </p>
+
+                <a class="button primary-button" href="#intro">EXPLORE POINTERS <span>→</span></a>
+            </div>
+
+            <div class="hero-composition" aria-hidden="true">
+                <div class="hero-square"></div>
+                <div class="hero-circle"></div>
+                <div class="hero-line"></div>
+                <div class="hero-address">0x7FFE<br>MEMORY<br>BLOCK</div>
+            </div>
+        </div>
+
+        <div class="hero-nav">
+            <div class="section-kicker">NAVIGATE</div>
+            <nav aria-label="Primary navigation">
+            <a href="#home">Home</a> |
+            <a href="#intro">What are Pointers?</a> |
+            <a href="#memory">Memory</a> |
+            <a href="#syntax">Syntax</a> |
+            <a href="#examples">Examples</a> |
+            <a href="#mistakes">Common Mistakes</a> |
+            <a href="#quiz">Quiz</a>
+            </nav>
+        </div>
+    </header>
+
+
+    <main>
+
+    <!-- ================= INTRODUCTION ================= -->
+
+    <section id="intro" class="content-section">
+
+        <div class="section-kicker">02 / THE CONCEPT</div>
+        <h2>WHAT ARE POINTERS?</h2>
+
+        <p>
+            Pointers are a little like variables.
+            They look like variables and, to some extent,
+            even behave like them—but they have a special job.
+        </p>
+
+        <p>
+            They aren't frauds either.
+            A pointer is a special type of variable that stores
+            the <strong>memory address</strong> of another variable.
+        </p>
+
+        <h3>Why are pointers useful?</h3>
+
+        <p>
+            So why bother keeping track of addresses?
+            Because pointers give C a way to work directly
+            with where data lives in memory.
+        </p>
+
+        <ol>
+            <li>
+                They allow you to access and modify a variable
+                through its memory address.
+            </li>
+
+            <li>
+                They allow functions to modify the original
+                variables passed to them.
+            </li>
+
+            <li>
+                They are essential for working with arrays
+                and strings.
+            </li>
+
+            <li>
+                They allow programmers to create dynamic
+                data structures such as linked lists and trees.
+            </li>
+        </ol>
+
+    </section>
+
+
+    <!-- ================= MEMORY ================= -->
+
+    <section id="memory" class="content-section swiss-grid-pattern">
+
+        <div class="section-kicker">03 / THE MODEL</div>
+        <h2>THE CITY OF MEMORY</h2>
+
+        <p>
+            Imagine your computer's memory as a giant city.
+            Every variable gets its own little home somewhere
+            in that city.
+        </p>
+
+        <p>
+            And just like every home needs an address,
+            every variable has a memory address.
+        </p>
+
+        <p>
+            The problem?
+            Variables don't put up signboards saying
+            <em>"I'm over here!"</em>
+        </p>
+
+        <p>
+            That's where pointers come in.
+            They keep track of those addresses so C knows
+            exactly where to look.
+        </p>
+
+
+        <h3>Meet the Three Residents</h3>
+
+        <h4>🏠 The Variable</h4>
+
+        <p>
+            The variable stores the actual data.
+        </p>
+
+        <pre>
+int x = 5;
+        </pre>
+
+
+        <h4>📍 The Address</h4>
+
+        <p>
+            The address tells us where that variable lives
+            in memory.
+        </p>
+
+        <pre>
+&amp;x
+        </pre>
+
+
+        <h4>🗺️ The Pointer</h4>
+
+        <p>
+            The pointer stores the address of another variable.
+            Think of it as a little map leading us to the
+            variable's house.
+        </p>
+
+        <pre>
+int *ptr = &amp;x;
+        </pre>
+
+    </section>
+
+
+    <!-- ================= POINTER OPERATORS ================= -->
+
+    <section id="operators" class="content-section">
+
+        <div class="section-kicker">04 / OPERATORS</div>
+        <h2>THE TWO MAGIC SYMBOLS</h2>
+
+        <p>
+            Two symbols are going to appear again and again
+            when working with pointers:
+        </p>
+
+
+        <h3>&amp; — The Address-of Operator</h3>
+
+        <p>
+            The <code>&amp;</code> operator asks:
+        </p>
+
+        <blockquote>
+            "Where does this variable live?"
+        </blockquote>
+
+        <pre>
+int x = 5;
+
+&amp;x;
+        </pre>
+
+        <p>
+            It gives us the memory address of <code>x</code>.
+            In our house analogy, <code>&amp;x</code> gives us
+            the address of the house.
+        </p>
+
+
+        <h3>* — The Dereference Operator</h3>
+
+        <p>
+            The <code>*</code> operator asks:
+        </p>
+
+        <blockquote>
+            "What's inside the house at this address?"
+        </blockquote>
+
+        <pre>
+int x = 5;
+int *ptr = &amp;x;
+
+*ptr;
+        </pre>
+
+        <p>
+            Dereferencing the pointer allows us to access
+            the value stored at the address it contains.
+        </p>
+
+    </section>
+
+
+    <!-- ================= POINTER SYNTAX ================= -->
+
+    <section id="syntax" class="content-section swiss-dots">
+
+        <div class="section-kicker">05 / SYNTAX</div>
+        <h2>GIVING C A MAP</h2>
+
+        <p>
+            In C, a pointer is declared using the asterisk
+            (<code>*</code>) symbol.
+        </p>
+
+        <pre>
+type *pointer_name;
+        </pre>
+
+        <p>
+            For example, to declare a pointer that can point
+            to an integer:
+        </p>
+
+        <pre>
+int *ptr;
+        </pre>
+
+        <p>
+            We can then give it the address of an integer:
+        </p>
+
+        <pre>
+int x = 5;
+int *ptr = &amp;x;
+        </pre>
+
+        <p>
+            Now <code>ptr</code> knows where <code>x</code> lives.
+        </p>
+
+    </section>
+
+
+    <!-- ================= FUTURE SECTIONS ================= -->
+
+    <section id="examples" class="content-section">
+
+        <div class="section-kicker">06 / FIELD NOTES</div>
+        <h2>POINTER EXAMPLES</h2>
+
+        <article class="example-card"><div class="example-label">EXAMPLE 01</div><h3>Basic Pointer Usage</h3>
+
+        <img src="pointers 1.png" alt="Pointer Example 1" class="example-image" width="500" height="300"></article>
+
+        <article class="example-card"><div class="example-label">EXAMPLE 02</div><h3>Accessing a Value Through a Pointer</h3>
+
+        <img src="pointers 2.png" alt="Pointer Example 2" class="example-image" width="500" height="300"></article>
+
+        <article class="example-card"><div class="example-label">EXAMPLE 03</div><h3>Changing a Variable Through a Pointer</h3>
+
+        <img src="pointers 3.png" alt="Pointer Example 3" class="example-image" width="500" height="300"></article>
+
+        <article class="example-card"><div class="example-label">EXAMPLE 04</div><h3>Using a Pointer with an Array</h3>
+
+        <img src="pointers 4.png" alt="Pointer Example 4" class="example-image" width="500" height="300"></article>
+
+        <article class="example-card"><div class="example-label">EXAMPLE 05</div><h3>Modifying a Variable Through a Function</h3>
+
+        <img src="pointers 5.png" alt="Pointer Example 5" class="example-image" width="500" height="300"></article>
+
+        <!-- Add examples here -->
+
+    </section>
+
+         <!-- ================= COMMON MISTAKES ================= -->
+
+<section id="mistakes" class="content-section swiss-diagonal">
+
+    <div class="section-kicker">07 / FAILURE MODES</div>
+    <h2>LOST MAPS &amp; WRONG ADDRESSES</h2>
+
+    <p>
+        Pointers are powerful, but even the best map is useless
+        if the address is missing, invalid, or points somewhere
+        that no longer exists.
+    </p>
+
+
+    <!-- 1. Uninitialized Pointer -->
+
+    <h3>🗺️ 1. The Blank Map — Uninitialized Pointer</h3>
+
+    <p>
+        A pointer needs a valid address before it can be used.
+        Declaring a pointer without giving it an address leaves
+        it pointing to an unknown location.
+    </p>
+
+    <pre>
+#include &lt;stdio.h&gt;
+
+int main() {
+
+    int *ptr;
+
+    *ptr = 10;      // ❌ Dangerous!
+
+    return 0;
+}
+    </pre>
+
+    <p>
+        <strong>What's wrong?</strong>
+        <code>ptr</code> has not been given a valid address.
+        It's like having a map with no destination marked on it.
+    </p>
+
+
+    <!-- 2. NULL Pointer -->
+
+    <h3>🚫 2. No Destination — NULL Pointer</h3>
+
+    <p>
+        A NULL pointer intentionally points to no valid object.
+        It is safe to create one, but trying to access a value
+        through it is not.
+    </p>
+
+    <pre>
+#include &lt;stdio.h&gt;
+
+int main() {
+
+    int *ptr = NULL;
+
+    if (ptr == NULL) {
+        printf("No valid address!\n");
+    }
+
+    return 0;
+}
+    </pre>
+
+    <p>
+        Here, the pointer has no destination. Before using a pointer,
+        we can check whether it is <code>NULL</code>.
+    </p>
+
+
+    <!-- 3. Dangling Pointer -->
+
+    <h3>🏚️ 3. The House Is Gone — Dangling Pointer</h3>
+
+    <p>
+        A dangling pointer is a pointer that refers to an object
+        whose lifetime has ended.
+    </p>
+
+    <pre>
+#include &lt;stdio.h&gt;
+
+int main() {
+
+    int *ptr;
+
+    {
+        int x = 10;
+        ptr = &amp;x;
+    }
+
+    // x no longer exists here.
+    // ptr is now a dangling pointer.
+
+    return 0;
+}
+    </pre>
+
+    <p>
+        Think of it as keeping someone's old address after
+        their house has been demolished. The address may still
+        be written on your map, but the original house is gone.
+    </p>
+
+
+    <!-- 4. ptr vs *ptr -->
+
+    <h3>🧭 4. The Map Isn't the House — <code>ptr</code> vs <code>*ptr</code></h3>
+
+    <p>
+        One of the most common beginner mistakes is confusing
+        the pointer itself with the value it points to.
+    </p>
+
+    <pre>
+#include &lt;stdio.h&gt;
+
+int main() {
+
+    int x = 25;
+    int *ptr = &amp;x;
+
+    printf("Address: %p\n", (void *)ptr);
+    printf("Value: %d\n", *ptr);
+
+    return 0;
+}
+    </pre>
+
+    <p>
+        <code>ptr</code> gives us the address stored in the pointer,
+        while <code>*ptr</code> gives us the value at that address.
+    </p>
+
+    <div>
+        <h3>🧠 Remember:</h3>
+
+        <p>
+            <strong>The map isn't the house.</strong>
+        </p>
+
+        <p>
+            <code>ptr</code> → 📍 Where is the house?</p>
+
+        <p>
+            <code>*ptr</code> → 🏠 What's inside the house?</p>
+    </div>
+
+
+    <!-- Golden Rule -->
+
+    <h3>🔑 Pointer Golden Rule</h3>
+
+    <p>
+        Before following a pointer, always make sure you know
+        where it points.
+    </p>
+
+</section>
+
+        <!-- ================= POINTER QUIZ ================= -->
+
+<section id="quiz" class="content-section quiz-section swiss-grid-pattern">
+
+    <div class="section-kicker">08 / TEST YOUR ROUTE</div>
+    <h2>POINTER NAVIGATION CHALLENGE</h2>
+
+    <p>
+        Think you've got pointers figured out?
+        Let's see if you can navigate your way through memory
+        without getting lost. 🗺️
+    </p>
+
+    <!-- Question 1 -->
+    <div class="quiz-question">
+
+        <h3>1. What does <code>&amp;x</code> give you?</h3>
+
+        <label>
+            <input type="radio" name="q1" value="A" aria-label="Option A">
+            A. The value stored in x
+        </label><br>
+
+        <label>
+            <input type="radio" name="q1" value="B" aria-label="Option B">
+            B. The memory address of x
+        </label><br>
+
+        <label>
+            <input type="radio" name="q1" value="C" aria-label="Option C">
+            C. The size of x
+        </label><br>
+
+        <label>
+            <input type="radio" name="q1" value="D" aria-label="Option D">
+            D. A new variable
+        </label><br>
+
+    </div>
+
+
+    <!-- Question 2 -->
+    <div class="quiz-question">
+
+        <h3>2. What will this program print?</h3>
+
+        <pre><code>
+int x = 10;
+int *ptr = &amp;x;
+
+printf("%d", *ptr);
+        </code></pre>
+
+        <label>
+            <input type="radio" name="q2" value="A" aria-label="Option A">
+            A. The address of x
+        </label>
+
+        <label>
+            <input type="radio" name="q2" value="B" aria-label="Option B">
+            B. 10
+        </label>
+
+        <label>
+            <input type="radio" name="q2" value="C" aria-label="Option C">
+            C. The address of ptr
+        </label>
+
+        <label>
+            <input type="radio" name="q2" value="D" aria-label="Option D">
+            D. Error
+        </label>
+
+    </div>
+
+
+    <!-- Question 3 -->
+    <div class="quiz-question">
+
+        <h3>3. What does <code>*ptr</code> mean?</h3>
+
+        <label>
+            <input type="radio" name="q3" value="A" aria-label="Option A">
+            A. The address stored in ptr
+        </label>
+
+        <label>
+            <input type="radio" name="q3" value="B" aria-label="Option B">
+            B. The value at the address stored in ptr
+        </label>
+
+        <label>
+            <input type="radio" name="q3" value="C" aria-label="Option C">
+            C. The size of ptr
+        </label>
+
+        <label>
+            <input type="radio" name="q3" value="D" aria-label="Option D">
+            D. A new pointer
+        </label>
+
+    </div>
+
+
+    <!-- Question 4 -->
+    <div class="quiz-question">
+
+        <h3>4. What will be the value of <code>x</code>?</h3>
+
+        <pre><code>
+int x = 5;
+int *ptr = &amp;x;
+
+*ptr = 20;
+        </code></pre>
+
+        <label>
+            <input type="radio" name="q4" value="A" aria-label="Option A">
+            A. 5
+        </label>
+
+        <label>
+            <input type="radio" name="q4" value="B" aria-label="Option B">
+            B. 10
+        </label>
+
+        <label>
+            <input type="radio" name="q4" value="C" aria-label="Option C">
+            C. 20
+        </label>
+
+        <label>
+            <input type="radio" name="q4" value="D" aria-label="Option D">
+            D. 25
+        </label>
+
+    </div>
+
+
+    <!-- Question 5 -->
+    <div class="quiz-question">
+
+        <h3>5. Find the output</h3>
+
+        <pre><code>
+int a[] = {10, 20, 30};
+int *ptr = a;
+
+printf("%d", *(ptr + 1));
+        </code></pre>
+
+        <label>
+            <input type="radio" name="q5" value="A" aria-label="Option A">
+            A. 10
+        </label>
+
+        <label>
+            <input type="radio" name="q5" value="B" aria-label="Option B">
+            B. 20
+        </label>
+
+        <label>
+            <input type="radio" name="q5" value="C" aria-label="Option C">
+            C. 30
+        </label>
+
+        <label>
+            <input type="radio" name="q5" value="D" aria-label="Option D">
+            D. Address of a
+        </label>
+
+    </div>
+
+
+    <!-- Question 6 -->
+    <div class="quiz-question">
+
+        <h3>6. Which line correctly creates a pointer to <code>age</code>?</h3>
+
+        <pre><code>
+int age = 20;
+        </code></pre>
+
+        <label>
+            <input type="radio" name="q6" value="A" aria-label="Option A">
+            A. int ptr = age;
+        </label>
+
+        <label>
+            <input type="radio" name="q6" value="B" aria-label="Option B">
+            B. int *ptr = age;
+        </label>
+
+        <label>
+            <input type="radio" name="q6" value="C" aria-label="Option C">
+            C. int *ptr = &amp;age;
+        </label>
+
+        <label>
+            <input type="radio" name="q6" value="D" aria-label="Option D">
+            D. int &amp;ptr = age;
+        </label>
+
+    </div>
+
+
+    <!-- Question 7 -->
+    <div class="quiz-question">
+
+        <h3>7. What is wrong with this code?</h3>
+
+        <pre><code>
+int *ptr;
+*ptr = 10;
+        </code></pre>
+
+        <label>
+            <input type="radio" name="q7" value="A" aria-label="Option A">
+            A. Nothing is wrong
+        </label>
+
+        <label>
+            <input type="radio" name="q7" value="B" aria-label="Option B">
+            B. ptr has no valid address assigned to it
+        </label>
+
+        <label>
+            <input type="radio" name="q7" value="C" aria-label="Option C">
+            C. ptr should be a float
+        </label>
+
+        <label>
+            <input type="radio" name="q7" value="D" aria-label="Option D">
+            D. The * symbol should be removed
+        </label>
+
+    </div>
+
+
+    <!-- Question 8 -->
+    <div class="quiz-question">
+
+        <h3>8. What does a NULL pointer represent?</h3>
+
+        <label>
+            <input type="radio" name="q8" value="A" aria-label="Option A">
+            A. A pointer pointing to a valid integer
+        </label>
+
+        <label>
+            <input type="radio" name="q8" value="B" aria-label="Option B">
+            B. A pointer pointing to no valid object
+        </label>
+
+        <label>
+            <input type="radio" name="q8" value="C" aria-label="Option C">
+            C. A pointer containing the value 0 as an integer variable
+        </label>
+
+        <label>
+            <input type="radio" name="q8" value="D" aria-label="Option D">
+            D. A pointer pointing to itself
+        </label>
+
+    </div>
+
+
+    <!-- Question 9 -->
+    <div class="quiz-question">
+
+        <h3>9. What happens here?</h3>
+
+        <pre><code>
+int x = 50;
+int *ptr = &amp;x;
+
+printf("%d", x);
+printf("%d", *ptr);
+        </code></pre>
+
+        <label>
+            <input type="radio" name="q9" value="A" aria-label="Option A">
+            A. 50 and 50
+        </label>
+
+        <label>
+            <input type="radio" name="q9" value="B" aria-label="Option B">
+            B. Address and 50
+        </label>
+
+        <label>
+            <input type="radio" name="q9" value="C" aria-label="Option C">
+            C. 50 and address
+        </label>
+
+        <label>
+            <input type="radio" name="q9" value="D" aria-label="Option D">
+            D. Two different values
+        </label>
+
+    </div>
+
+
+    <!-- Question 10 -->
+    <div class="quiz-question">
+
+        <h3>10. Final Challenge ⚠️</h3>
+
+        <pre><code>
+int x = 10;
+int y = 20;
+
+int *ptr = &amp;x;
+
+*ptr = 30;
+
+ptr = &amp;y;
+
+*ptr = 40;
+
+printf("%d %d", x, y);
+        </code></pre>
+
+        <label>
+            <input type="radio" name="q10" value="A" aria-label="Option A">
+            A. 10 20
+        </label>
+
+        <label>
+            <input type="radio" name="q10" value="B" aria-label="Option B">
+            B. 30 20
+        </label>
+
+        <label>
+            <input type="radio" name="q10" value="C" aria-label="Option C">
+            C. 10 40
+        </label>
+
+        <label>
+            <input type="radio" name="q10" value="D" aria-label="Option D">
+            D. 30 40
+        </label>
+
+    </div>
+
+
+    <!-- Submit -->
+    <button type="button" class="button primary-button quiz-submit" id="check-quiz">
+        CHECK MY ANSWERS →
+    </button>
+
+    <div id="quiz-result" class="quiz-result" aria-live="polite"></div>
+
+</section>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-mark">POINTERS<br>IN C</div>
+        <div>
+            <div class="section-kicker">END OF ROUTE</div>
+            <p>Understand the address. Follow the pointer. Change what lives there.</p>
+        </div>
+        <button id="back-to-top" class="back-to-top" type="button" aria-label="Back to top">↑</button>
+    </footer>
+    </div>
+
+    <script src="point.js"></script>
+</body>
+    
+</html>
+
