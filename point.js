@@ -36,7 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     codeBlocks.forEach((block) => {
 
-        // Don't add duplicate buttons
         if (block.querySelector(".copy-btn")) return;
 
         const button = document.createElement("button");
@@ -60,6 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }, 1500);
 
             } catch (error) {
+
                 button.textContent = "Failed";
 
                 setTimeout(() => {
@@ -109,6 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
                  */
 
                 if (addressOutput) {
+
                     const fakeAddress =
                         "0x" +
                         Math.floor(Math.random() * 0xFFFFFF)
@@ -126,49 +127,91 @@ document.addEventListener("DOMContentLoaded", () => {
        4. QUIZ SYSTEM
        ===================================================== */
 
-    const quizQuestions = document.querySelectorAll(".quiz-question");
+    const quizButton = document.getElementById("check-quiz");
+    const quizResult = document.getElementById("quiz-result");
 
-    quizQuestions.forEach((question) => {
+    if (quizButton && quizResult) {
 
-        const submitButton =
-            question.querySelector(".check-answer");
+        const correctAnswers = {
+            q1: "B",
+            q2: "B",
+            q3: "B",
+            q4: "C",
+            q5: "B",
+            q6: "C",
+            q7: "B",
+            q8: "B",
+            q9: "A",
+            q10: "D"
+        };
 
-        const result =
-            question.querySelector(".quiz-result");
+        quizButton.addEventListener("click", () => {
 
-        if (!submitButton || !result) return;
+            let score = 0;
+            let answered = 0;
 
-        submitButton.addEventListener("click", () => {
+            Object.entries(correctAnswers).forEach(([question, correct]) => {
 
-            const selected =
-                question.querySelector(
-                    'input[type="radio"]:checked'
+                const selected = document.querySelector(
+                    `input[name="${question}"]:checked`
                 );
 
-            if (!selected) {
-                result.textContent = "Please select an answer.";
-                result.className = "quiz-result warning";
+                if (selected) {
+
+                    answered++;
+
+                    if (selected.value === correct) {
+                        score++;
+                    }
+                }
+            });
+
+
+            if (answered === 0) {
+
+                quizResult.textContent =
+                    "Please answer at least one question.";
+
+                quizResult.className =
+                    "quiz-result warning";
+
                 return;
             }
 
-            const correctAnswer =
-                question.dataset.answer;
 
-            if (selected.value === correctAnswer) {
+            const percentage =
+                Math.round((score / 10) * 100);
 
-                result.textContent = "✓ Correct!";
-                result.className = "quiz-result correct";
 
-            } else {
+            quizResult.textContent =
+                `You scored ${score}/10 (${percentage}%). ` +
+                `${answered < 10
+                    ? `You answered ${answered}/10 questions. `
+                    : ""}` +
+                (
+                    score === 10
+                        ? "Perfect score! 🎯"
+                        : score >= 7
+                            ? "Great job! 🗺️"
+                            : score >= 5
+                                ? "Good start! Review the pointer concepts and try again."
+                                : "Keep practicing! Revisit the pointer sections and try again."
+                );
 
-                result.textContent =
-                    "✗ Incorrect. Try again!";
 
-                result.className =
-                    "quiz-result incorrect";
-            }
+            quizResult.className =
+                score >= 7
+                    ? "quiz-result correct"
+                    : "quiz-result incorrect";
+
+
+            quizResult.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest"
+            });
+
         });
-    });
+    }
 
 
     /* =====================================================
@@ -190,20 +233,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (!answer) return;
 
-            if (
-                answer.style.display === "none" ||
-                answer.style.display === ""
-            ) {
+            const isHidden =
+                answer.hidden ||
+                answer.style.display === "none";
 
+            if (isHidden) {
+
+                answer.hidden = false;
                 answer.style.display = "block";
                 button.textContent = "Hide Answer";
 
             } else {
 
+                answer.hidden = true;
                 answer.style.display = "none";
                 button.textContent = "Show Answer";
             }
+
         });
+
     });
 
 
@@ -221,6 +269,7 @@ document.addEventListener("DOMContentLoaded", () => {
             card.classList.toggle("active");
 
         });
+
     });
 
 
@@ -229,13 +278,13 @@ document.addEventListener("DOMContentLoaded", () => {
        ===================================================== */
 
     let backToTop =
-        document.getElementById("backToTop");
+        document.getElementById("back-to-top");
 
     if (!backToTop) {
 
         backToTop = document.createElement("button");
 
-        backToTop.id = "backToTop";
+        backToTop.id = "back-to-top";
         backToTop.textContent = "↑";
 
         document.body.appendChild(backToTop);
@@ -243,14 +292,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     backToTop.style.display = "none";
 
+
     window.addEventListener("scroll", () => {
 
         if (window.scrollY > 400) {
+
             backToTop.style.display = "block";
+
         } else {
+
             backToTop.style.display = "none";
         }
+
     });
+
 
     backToTop.addEventListener("click", () => {
 
@@ -279,6 +334,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.prepend(progressBar);
     }
 
+
     window.addEventListener("scroll", () => {
 
         const scrollTop =
@@ -295,6 +351,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         progressBar.style.width =
             percentage + "%";
+
     });
 
 
@@ -323,6 +380,7 @@ document.addEventListener("DOMContentLoaded", () => {
             output.classList.add("show");
 
         });
+
     });
 
 
@@ -363,7 +421,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     "Not quite. The * operator can dereference a pointer to access the value stored at its address."
                 );
             }
+
         });
+
     }
 
 
@@ -385,6 +445,7 @@ document.addEventListener("DOMContentLoaded", () => {
             cell.classList.add("selected");
 
         });
+
     });
 
 
@@ -425,6 +486,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         );
 
+
     sections.forEach((section) => {
         sectionObserver.observe(section);
     });
@@ -446,12 +508,18 @@ document.addEventListener("DOMContentLoaded", () => {
             if (
                 document.body.classList.contains("dark-mode")
             ) {
-                themeButton.textContent = "☀ Light Mode";
+
+                themeButton.textContent =
+                    "☀ Light Mode";
+
             } else {
-                themeButton.textContent = "🌙 Dark Mode";
+
+                themeButton.textContent =
+                    "🌙 Dark Mode";
             }
 
         });
+
     }
 
 
